@@ -21,12 +21,12 @@ class GrupYoneticisi(models.Model):
 
 class TakimLideri(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    GrupYoneticisi_ID = models.ForeignKey(GrupYoneticisi, on_delete=models.CASCADE)
+    GrupYoneticisi = models.ForeignKey(GrupYoneticisi, on_delete=models.CASCADE)
 
 
 class MusteriTemsilcisi(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    TakimLideri_ID = models.ForeignKey(TakimLideri, on_delete=models.CASCADE)
+    TakimLideri = models.ForeignKey(TakimLideri, on_delete=models.CASCADE)
     SICIL_NO = models.CharField(max_length=11, unique=True)
 
 
@@ -35,7 +35,7 @@ class Musteri(models.Model):
 
 
 class GorusmeKaydi(models.Model):
-    Musteri_ID = models.ForeignKey(Musteri, on_delete=models.CASCADE)
+    Musteri = models.ForeignKey(Musteri, on_delete=models.CASCADE)
     MusteriTemsilcisi_ID = models.ForeignKey(MusteriTemsilcisi, on_delete=models.CASCADE)
     GORUSME_KONU_CHOICES = [
         ('Arıza', 'Arıza'),
