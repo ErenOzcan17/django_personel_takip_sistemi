@@ -18,16 +18,7 @@ $(document).ready(function() {
         'password': password
       },
       success: function(response, status, xhr){
-        const contentType = xhr.getResponseHeader("Content-Type");
-        if (contentType.includes("text/html")) {
-          // Eğer yanıt HTML ise, mevcut sekmede aç
-                document.open();
-                document.write(xhr.responseText);
-                document.close();
-        } else {
-            // Farklı bir içerik tipi ise, konsola yazdır
-            console.log(xhr.responseText);
-        }
+          window.location.href = response.redirect_url;
 
       },
       error: function(xhr, status, error) {

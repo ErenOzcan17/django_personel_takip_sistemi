@@ -1,5 +1,5 @@
 from django.shortcuts import render
 
 
-def service_details(request):
-    return render(request, "service-details.html")
+def musteri_home_view(request):
+    return render(request, "musteri_home.html")
