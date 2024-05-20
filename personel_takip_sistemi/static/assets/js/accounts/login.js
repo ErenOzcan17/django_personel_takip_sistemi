@@ -17,8 +17,13 @@ $(document).ready(function() {
         'username': username,
         'password': password
       },
-      success: function(response, status, xhr){
-          window.location.href = response.redirect_url;
+      success: function(response){
+        // İşlem başarılıysa, kullanıcıyı yönlendir
+        if (response.error) {
+          alert(response.result);
+        } else {
+            window.location.href = response.redirect_url;
+        }
 
       },
       error: function(xhr, status, error) {
