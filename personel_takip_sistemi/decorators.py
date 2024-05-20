@@ -43,6 +43,3 @@ def user_is_musteri(function):
             raise PermissionDenied
 
     return wrap
-
-
-

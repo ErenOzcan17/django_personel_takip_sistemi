@@ -23,6 +23,24 @@ def musteri_temsilcisi_home_view(request):
 
 
 @login_required
+@user_is_musteri_temsilcisi
+def musteri_temsilcisi_home_view(request):
+    return render(request, "app/musteri_temsilcisi_home.html")
+
+
+@login_required
+@user_is_musteri_temsilcisi
+def musteri_temsilcisi_home_view(request):
+    return render(request, "app/musteri_temsilcisi_home.html")
+
+
+@login_required
+@user_is_musteri_temsilcisi
+def musteri_temsilcisi_home_view(request):
+    return render(request, "app/musteri_temsilcisi_home.html")
+
+
+@login_required
 @user_is_musteri
 def musteri_home_view(request):
     return render(request, "app/musteri_home.html")
