@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+}
+
+.btn {
+    display: block;
+    width: 200px;
+    margin: 10px auto;
+    padding: 15px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#button1 {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#button1:hover {
+    background-color: #45a049;
+}
+
+#button2 {
+    background-color: #008CBA;
+    color: white;
+}
+
+#button2:hover {
+    background-color: #007bb5;
+}
+
+#button3 {
+    background-color: #f44336;
+    color: white;
+}
+
+#button3:hover {
+    background-color: #da190b;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}

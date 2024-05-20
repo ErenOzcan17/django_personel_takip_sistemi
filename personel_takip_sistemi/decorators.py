@@ -33,13 +33,3 @@ def user_is_musteri_temsilcisi(function):
 
     return wrap
 
-
-def user_is_musteri(function):
-    def wrap(request, *args, **kwargs):
-        user = request.user
-        if user.USER_TYPE == "Musteri" or user.is_superuser == True:
-            return function(request, *args, **kwargs)
-        else:
-            raise PermissionDenied
-
-    return wrap

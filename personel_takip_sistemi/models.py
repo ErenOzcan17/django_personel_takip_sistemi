@@ -7,7 +7,6 @@ class CustomUser(AbstractUser):
         ('GrupYoneticisi', 'GrupYoneticisi'),
         ('TakimLideri', 'TakimLideri'),
         ('MusteriTemsilcisi', 'MusteriTemsilcisi'),
-        ('Musteri', 'Musteri'),
     ]
     USER_TYPE = models.CharField(max_length=30, choices=USER_TYPE_CHOISES)
 
@@ -30,13 +29,10 @@ class MusteriTemsilcisi(models.Model):
     SICIL_NO = models.CharField(max_length=11, unique=True)
 
 
-class Musteri(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
-
 class GorusmeKaydi(models.Model):
-    Musteri = models.ForeignKey(Musteri, on_delete=models.CASCADE)
-    MusteriTemsilcisi_ID = models.ForeignKey(MusteriTemsilcisi, on_delete=models.CASCADE)
+    Musteri_ad = models.CharField(max_length=100)
+    Musteri_soyad = models.CharField(max_length=100)
+    MusteriTemsilcisi = models.ForeignKey(MusteriTemsilcisi, on_delete=models.CASCADE)
     GORUSME_KONU_CHOICES = [
         ('Arıza', 'Arıza'),
         ('Talep', 'Talep'),
@@ -49,7 +45,6 @@ class GorusmeKaydi(models.Model):
         ('Sorun çözülemedi', 'Sorun çözülemedi')
     ]
     GORUSME_DURUMU = models.CharField(max_length=20, choices=GORUSME_DURUMU_CHOICES)
-    GORUSME_TARIHI = models.DateField()
-    GORUSME_BASLANGIC_SAATI = models.TimeField()
-    GORUSME_BITIS_SAATI = models.TimeField()
+    GORUSME_BASLANGIC_TARIHI = models.DateTimeField()
+    GORUSME_BITIS_TARIHI = models.DateTimeField()
 

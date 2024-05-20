@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Müşteri Temsilcisi Görüşme Kayıtları</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Müşteri Temsilcisi Görüşme Kayıtları</h1>
+
+<button type="button" id="yeniCagriBtn">Yeni kayıt</button>
+
+<!-- Görüşme Kayıtları Tablosu -->
+<h2>Mevcut Kayıtlar</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Müşteri Adı</th>
+        <th>Müşteri Soyadı</th>
+        <th>Görüşme Konusu</th>
+        <th>Görüşme Durumu</th>
+        <th>Görüşme Tarihi</th>
+        <th>Görüşme Başlangıç Saati</th>
+        <th>Görüşme Bitiş Saati</th>
+    </tr>
+    </thead>
+    <tbody id="kayıtlar">
+    {% for kayit in context %}
+        <tr>
+            <td>{{ kayit.Musteri_ad }}</td>
+            <td>{{ kayit.Musteri_soyad }}</td>
+            <td>{{ kayit.GORUSME_KONU }}</td>
+            <td>{{ kayit.GORUSME_DURUMU }}</td>
+            <td>{{ kayit.GORUSME_TARIHI }}</td>
+            <td>{{ kayit.GORUSME_BASLANGIC_SAATI }}</td>
+            <td>{{ kayit.GORUSME_BITIS_SAATI }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script src="{% static 'assets/js/musteri_temsilcisi/gorusme_kaydı.js' %}"></script>
+
+</body>
+</html>

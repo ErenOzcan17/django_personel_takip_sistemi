@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Kayıt</title>
+    <!-- CSS dosyalarını buraya ekleyebilirsiniz -->
+</head>
+<body>
+<h1>Yeni Kayıt Oluştur</h1>
+<form method="post" id="gorusmeForm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Kaydet</button>
+</form>
+<script src="{% static 'assets/js/musteri_temsilcisi/yeni_kayıt.js' %}"></script>
+</body>
+</html>
+
