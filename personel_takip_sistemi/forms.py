@@ -1,5 +1,5 @@
 from django import forms
-from .models import GorusmeKaydi
+from .models import GorusmeKaydi, Primler
 
 
 class GorusmeKaydiFormu(forms.ModelForm):

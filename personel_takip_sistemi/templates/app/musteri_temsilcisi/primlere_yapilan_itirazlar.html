@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Müşteri Temsilcisi Prim İtirazları</title>
+    <script src="{% static 'assets/js/musteri_temsilcisi/primelere_yapilan_itirazlar.js' %}" defer></script>
+</head>
+<body>
+    <h1>Müşteri Temsilcisi Prim İtirazları</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Prim Tutarı</th>
+                <th>Prim Tarihi</th>
+                <th>İtiraz Açıklama</th>
+                <th>İtiraz Durum</th>
+                <th>İtiraz Cevap</th>
+            </tr>
+        </thead>
+        <tbody id="primler-listesi">
+            {% for prim in context %}
+                <tr>
+                    <td>{{ prim.PRIM_TUTARI }}</td>
+                    <td>{{ prim.PRIM_TARIHI }}</td>
+                    <td>{{ prim.ITIRAZ_ACIKLAMA }}</td>
+                    <td>{{ prim.ITIRAZ_DURUM }}</td>
+                    <td>{{ prim.ITIRAZ_CEVAP }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form id="itiraz-form">
+        <input type="hidden" name="prim_id" id="prim_id">
+        <textarea name="itiraz_aciklama" id="itiraz_aciklama" placeholder="İtiraz Açıklama"></textarea>
+        <button type="submit">İtiraz Et</button>
+    </form>
+</body>
+</html>
