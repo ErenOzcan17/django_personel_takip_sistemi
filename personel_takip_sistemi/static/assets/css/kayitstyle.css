@@ -1,6 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     background: url("/static/assets/img/hero-bg-light.webp");
+    background-size: cover;
     margin: 0;
     padding: 0;
     display: flex;
@@ -8,8 +9,8 @@ body {
     align-items: center;
     height: 100vh;
     flex-direction: column;
-    background-size: cover;
 }
+/* Küçük ekranda hata oluyor üstten */
 .layer {
     position: absolute;
     top: 0;
