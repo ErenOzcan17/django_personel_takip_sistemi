@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yeni Kayıt</title>
     <!-- CSS dosyalarını buraya ekleyebilirsiniz -->
+    <link rel="stylesheet" href="{% static 'assets/css/kayitstyle.css' %}">
 </head>
 <body>
+<div class="layer"></div>
 <h1>Yeni Kayıt Oluştur</h1>
 <form method="post" id="gorusmeForm">
     {% csrf_token %}
