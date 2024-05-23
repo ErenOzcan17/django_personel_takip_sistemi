@@ -12,10 +12,11 @@ urlpatterns = [
     ),
 
     path(
-        "takim_lideri_home/",
+        "takim_lideri/",
         include(
             [
                 path("", views.takim_lideri_home_view, name='takim_lideri_home'),
+                path("itirazlar/", views.takim_lideri_itirazlar, name='takim_lideri_itirazlar'),
             ]
         )
     ),

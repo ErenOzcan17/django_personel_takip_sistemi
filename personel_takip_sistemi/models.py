@@ -48,3 +48,32 @@ class GorusmeKaydi(models.Model):
     GORUSME_BASLANGIC_TARIHI = models.DateTimeField()
     GORUSME_BITIS_TARIHI = models.DateTimeField()
 
+
+class Primler(models.Model):
+    MusteriTemsilcisi = models.ForeignKey(MusteriTemsilcisi, on_delete=models.CASCADE)
+    ITIRAZ_EDILDI = models.BooleanField()
+    ITIRAZ_DURUM_CHOISES = [
+        ('Beklemede', 'Beklemede'),
+        ('Onaylandı', 'Onaylandı'),
+        ('Reddedildi', 'Reddedildi')
+    ]
+    ITIRAZ_DURUM = models.CharField(max_length=20, choices=ITIRAZ_DURUM_CHOISES)
+    PRIM_YIL = models.IntegerField()
+    PRIM_AY_CHOISES = [
+        ('Ocak', 'Ocak'),
+        ('Şubat', 'Şubat'),
+        ('Mart', 'Mart'),
+        ('Nisan', 'Nisan'),
+        ('Mayıs', 'Mayıs'),
+        ('Haziran', 'Haziran'),
+        ('Temmuz', 'Temmuz'),
+        ('Ağustos', 'Ağustos'),
+        ('Eylül', 'Eylül'),
+        ('Ekim', 'Ekim'),
+        ('Kasım', 'Kasım'),
+        ('Aralık', 'Aralık'),
+    ]
+    PRIM_AY = models.CharField(max_length=20, choices=PRIM_AY_CHOISES)
+    PRIM_MIKTARI = models.FloatField()
+    ITIRAZ_ACIKLAMA = models.TextField()
+    ITIRAZ_CEVAP = models.TextField()

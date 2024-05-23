@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from personel_takip_sistemi.decorators import user_is_grup_yoneticisi, user_is_takim_lideri, user_is_musteri_temsilcisi
 from personel_takip_sistemi.forms import GorusmeKaydiFormu
-from .models import GorusmeKaydi
+from .models import GorusmeKaydi, Primler, MusteriTemsilcisi, CustomUser
 
 
 @login_required
@@ -17,7 +17,42 @@ def grup_yoneticisi_home_view(request):
 @login_required
 @user_is_takim_lideri
 def takim_lideri_home_view(request):
-    return render(request, "app/takim_lideri_home.html")
+    return render(request, "app/takim_lideri/takim_lideri_home.html")
+
+
+@login_required
+@user_is_takim_lideri
+def takim_lideri_itirazlar(request):
+    if request.method == 'POST':
+        response_data = {}
+        try:
+            itiraz = Primler.objects.get(id=request.POST.get('id'))
+            itiraz.ITIRAZ_DURUM = request.POST.get("itiraz_durum")
+            itiraz.ITIRAZ_CEVAP = request.POST.get('itiraz_cevap')
+            itiraz.save()
+            response_data["error"] = False
+            response_data["result"] = "İtiraz başarı ile oluşturuldu"
+        except Exception as e:
+            response_data["error"] = True
+            response_data["result"] = str(e)
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        context = []
+        musteri_temsilcileri = MusteriTemsilcisi.objects.filter(TakimLideri_id=request.user.id)
+        for musteri_temsilcisi in musteri_temsilcileri:
+            musteri_temsilcisi_user = CustomUser.objects.get(id=musteri_temsilcisi.user_id)
+            itiraz = Primler.objects.filter(MusteriTemsilcisi_id=musteri_temsilcisi.id, ITIRAZ_DURUM='Beklemede')
+            context.append({
+                'id': itiraz.id,
+                'isim': musteri_temsilcisi_user.first_name,
+                'soyisim': musteri_temsilcisi_user.last_name,
+                'musteri_temsilcisi': musteri_temsilcisi.SICIL_NO,
+                'itiraz_aciklama': itiraz.ACIKLAMA,
+                'prim_yil': itiraz.PRIM_YIL,
+                'prim_ay': itiraz.PRIM_AY,
+            })
+
+        return render(request, "app/takim_lideri/itirazlar.html", {"context": context})
 
 
 @login_required
@@ -46,13 +81,63 @@ def musteri_temsilcisi_cagri_listesi_menusu(request):
 @login_required
 @user_is_musteri_temsilcisi
 def musteri_temsilcisi_aylik_prim_listesi_menusu(request):
-    return render(request, "app/musteri_temsilcisi/home.html")
+    if request.method == 'POST':
+        response_data = {}
+        try:
+            prim = Primler.objects.get(id=request.POST.get('prim_id'))
+            prim.ITIRAZ_EDILDI = True
+            prim.ITIRAZ_DURUM = 'Beklemede'
+            prim.ITIRAZ_ACIKLAMA = request.POST.get('itiraz_aciklama')
+            prim.save()
+            # Todo: Mail gönderme işlemi yapılacak
+            response_data["error"] = False
+            response_data["result"] = "İtiraz başarı ile oluşturuldu"
+        except Exception as e:
+            response_data["error"] = True
+            response_data["result"] = str(e)
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        primler = Primler.objects.filter(MusteriTemsilcisi_id=request.user.id)
+        context = []
+        for prim in primler:
+            context.append({
+                'PRIM_TUTARI': prim.PRIM_TUTARI,
+                'PRIM_YIL': prim.PRIM_YIL,
+                'PRIM_AY': prim.PRIM_AY,
+                'ITIRAZ_EDILDI': prim.ITIRAZ_EDILDI,
+                'ITIRAZ_DURUM': prim.ITIRAZ_DURUM,
+            })
+
+        return render(request, "app/musteri_temsilcisi/home.html", {"context": context})
 
 
 @login_required
 @user_is_musteri_temsilcisi
 def musteri_temsilcisi_primlere_yapilan_itirazlar_menusu(request):
-    return render(request, "app/musteri_temsilcisi/home.html")
+    if request.method == 'POST':
+        response_data = {}
+        try:
+            prim = Primler.objects.get(id=request.POST.get('prim_id'))
+            prim.ITIRAZ_EDILDI = True
+            prim.ITIRAZ_ACIKLAMA = request.POST.get('itiraz_aciklama')
+            prim.save()
+        except Exception as e:
+            response_data["error"] = True
+            response_data["result"] = str(e)
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        context = []
+        primler = Primler.objects.filter(MusteriTemsilcisi_id=request.user.id, ITIRAZ_EDILDI=True)
+        for prim in primler:
+            context.append({
+                'PRIM_TUTARI': prim.PRIM_TUTARI,
+                'PRIM_TARIHI': prim.PRIM_TARIHI,
+                'ITIRAZ_EDILDI': prim.ITIRAZ_EDILDI,
+                'ITIRAZ_ACIKLAMA': prim.ITIRAZ_ACIKLAMA,
+                'ITIRAZ_DURUM': prim.ITIRAZ_DURUM,
+                'ITIRAZ_CEVAP': prim.ITIRAZ_CEVAP,
+            })
+        return render(request, "app/musteri_temsilcisi/primlere_yapilan_itirazlar.html", {"context": context})
 
 
 @login_required
@@ -74,4 +159,4 @@ def musteri_temsilcisi_yeni_kayit(request):
             response_data["result"] = str(e)
     else:
         form = GorusmeKaydiFormu()
-    return render(request, "app/musteri_temsilcisi/yeni_kayit.html", {'form': form})
+    return render(request, "app/musteri_temsilcisi/yeni_kayit.html", {"form": form})
