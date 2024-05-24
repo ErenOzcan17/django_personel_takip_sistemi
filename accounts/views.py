@@ -6,10 +6,6 @@ from django.urls import reverse
 from .forms import LoginForm
 
 
-def index(request):
-    return render(request, "accounts/index.html")
-
-
 def login_view(request):
     if request.method == "POST":
         response_data = {}
@@ -44,4 +40,4 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("index")
+    return redirect("login")
