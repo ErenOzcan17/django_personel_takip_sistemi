@@ -20,7 +20,7 @@ def login_view(request):
                 if user.USER_TYPE == "GrupYoneticisi":
                     response_data["redirect_url"] = reverse("grup_yoneticisi_home")
                 if user.USER_TYPE == "TakimLideri":
-                    response_data["redirect_url"] = reverse("takim_lideri_home")
+                    response_data["redirect_url"] = reverse("takim_lideri_itirazlar")
                 if user.USER_TYPE == "MusteriTemsilcisi":
                     response_data["redirect_url"] = reverse("musteri_temsilcisi_home")
                 response_data["error"] = False

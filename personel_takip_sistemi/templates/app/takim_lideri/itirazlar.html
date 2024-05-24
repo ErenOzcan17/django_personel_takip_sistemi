@@ -1,10 +1,58 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Takım Lideri İtirazlar</title>
+    <script src="{% static 'assets/js/takim_lideri/itirazlar.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'assets/css/musteri_temsilcisi/itiraz.css' %}">
 </head>
 <body>
+<div class="layer"></div>
+<h1>Takım Lideri İtirazlar</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Sicil No</th>
+        <th>İsim</th>
+        <th>Soyisim</th>
+        <th>İtiraz Açıklama</th>
+        <th>Prim Yılı</th>
+        <th>Prim Ayı</th>
+        <th>İtiraz Durum</th>
+    </tr>
+    </thead>
+    <tbody id="itirazlar-listesi">
+    {% for itiraz in context %}
+        <tr>
+            <td>{{ itiraz.sicil_no }}</td>
+            <td>{{ itiraz.isim }}</td>
+            <td>{{ itiraz.soyisim }}</td>
+            <td>{{ itiraz.itiraz_aciklama }}</td>
+            <td>{{ itiraz.prim_yil }}</td>
+            <td>{{ itiraz.prim_ay }}</td>
+            <td>
+                <button type="button" class="itiraz-button" data-id="{{ itiraz.id }}">İtiraz Cevapla</button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
+<!-- Pop-up Modal -->
+<div id="itirazModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>İtiraz Durumunu Güncelle</h2>
+        <label for="itirazDurum">Durum:</label>
+        <select id="itirazDurum">
+            <option value="Onaylandı">Onaylandı</option>
+            <option value="Reddedildi">Reddedildi</option>
+        </select>
+        <label for="itirazCevap">Cevap:</label>
+        <textarea id="itirazCevap" rows="4" cols="50"></textarea>
+        <button id="submitItiraz" type="button">Gönder</button>
+    </div>
+</div>
 </body>
 </html>

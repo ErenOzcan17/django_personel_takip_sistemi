@@ -1,11 +1,12 @@
 import json
 import sqlite3
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import render
 from personel_takip_sistemi.decorators import user_is_grup_yoneticisi, user_is_takim_lideri, user_is_musteri_temsilcisi
 from personel_takip_sistemi.forms import GorusmeKaydiFormu
-from accounts.models import MusteriTemsilcisi, User
+from accounts.models import MusteriTemsilcisi, User, TakimLideri
 from .models import GorusmeKaydi, Primler
 
 
@@ -13,12 +14,6 @@ from .models import GorusmeKaydi, Primler
 @user_is_grup_yoneticisi
 def grup_yoneticisi_home_view(request):
     return render(request, "app/grup_yoneticisi_home.html")
-
-
-@login_required
-@user_is_takim_lideri
-def takim_lideri_home_view(request):
-    return render(request, "app/takim_lideri/takim_lideri_home.html")
 
 
 @login_required
@@ -31,27 +26,40 @@ def takim_lideri_itirazlar(request):
             itiraz.ITIRAZ_DURUM = request.POST.get("itiraz_durum")
             itiraz.ITIRAZ_CEVAP = request.POST.get('itiraz_cevap')
             itiraz.save()
+
+            # Grup yöneticisine e-posta gönderme
+            grup_yoneticisi_email = 'group_manager@example.com'  # Grup yöneticisinin e-posta adresi
+            send_mail(
+                'İtiraz Durumu Güncellendi',
+                f'İtiraz ID: {itiraz.id}\nDurum: {itiraz.ITIRAZ_DURUM}\nCevap: {itiraz.ITIRAZ_CEVAP}',
+                'from@example.com',
+                [grup_yoneticisi_email],
+                fail_silently=False,
+            )
+
             response_data["error"] = False
-            response_data["result"] = "İtiraz başarı ile oluşturuldu"
+            response_data["result"] = "İtiraz başarı ile güncellendi"
         except Exception as e:
             response_data["error"] = True
             response_data["result"] = str(e)
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         context = []
-        musteri_temsilcileri = MusteriTemsilcisi.objects.filter(TakimLideri_id=request.user.id)
+        takim_lideri = TakimLideri.objects.get(user_id=request.user.id)
+        musteri_temsilcileri = MusteriTemsilcisi.objects.filter(takim_lideri_id=takim_lideri.id)
         for musteri_temsilcisi in musteri_temsilcileri:
             musteri_temsilcisi_user = User.objects.get(id=musteri_temsilcisi.user_id)
-            itiraz = Primler.objects.filter(MusteriTemsilcisi_id=musteri_temsilcisi.id, ITIRAZ_DURUM='Beklemede')
-            context.append({
-                'id': itiraz.id,
-                'isim': musteri_temsilcisi_user.first_name,
-                'soyisim': musteri_temsilcisi_user.last_name,
-                'musteri_temsilcisi': musteri_temsilcisi.SICIL_NO,
-                'itiraz_aciklama': itiraz.ACIKLAMA,
-                'prim_yil': itiraz.PRIM_YIL,
-                'prim_ay': itiraz.PRIM_AY,
-            })
+            itirazlar = Primler.objects.filter(MusteriTemsilcisi_id=musteri_temsilcisi.id)
+            for itiraz in itirazlar:
+                context.append({
+                    'id': itiraz.id,
+                    'sicil_no': musteri_temsilcisi.SICIL_NO,
+                    'isim': musteri_temsilcisi_user.first_name,
+                    'soyisim': musteri_temsilcisi_user.last_name,
+                    'itiraz_aciklama': itiraz.ITIRAZ_ACIKLAMA,
+                    'prim_yil': itiraz.PRIM_YIL,
+                    'prim_ay': itiraz.PRIM_AY,
+                })
 
         return render(request, "app/takim_lideri/itirazlar.html", {"context": context})
 
