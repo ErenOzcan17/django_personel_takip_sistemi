@@ -17,8 +17,6 @@ def login_view(request):
 
             if user is not None:
                 login(request, user)
-                if user.USER_TYPE == "Musteri":
-                    response_data["redirect_url"] = reverse("musteri_home")
                 if user.USER_TYPE == "GrupYoneticisi":
                     response_data["redirect_url"] = reverse("grup_yoneticisi_home")
                 if user.USER_TYPE == "TakimLideri":

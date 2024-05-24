@@ -11,7 +11,7 @@ $(document).ready(function() {
     // Ajax isteğini yap
     $.ajax({
       type: 'POST',
-      url: '/login/',
+      url: '/',
       headers: { "X-CSRFToken": csrftoken }, // CSRF token'ini istek başlığı olarak ekleyin
       data: {
         'username': username,
