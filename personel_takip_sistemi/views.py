@@ -22,20 +22,22 @@ def takim_lideri_itirazlar(request):
     if request.method == 'POST':
         response_data = {}
         try:
-            itiraz = Primler.objects.get(id=request.POST.get('id'))
-            itiraz.ITIRAZ_DURUM = request.POST.get("itiraz_durum")
-            itiraz.ITIRAZ_CEVAP = request.POST.get('itiraz_cevap')
+            body_unicode = request.body.decode('utf-8')
+            body_data = json.loads(body_unicode)
+            itiraz = Primler.objects.get(id=body_data['id'])
+            itiraz.ITIRAZ_DURUM = body_data['itiraz_durum']
+            itiraz.ITIRAZ_CEVAP = body_data['itiraz_cevap']
             itiraz.save()
 
             # Grup yöneticisine e-posta gönderme
-            grup_yoneticisi_email = 'group_manager@example.com'  # Grup yöneticisinin e-posta adresi
-            send_mail(
-                'İtiraz Durumu Güncellendi',
-                f'İtiraz ID: {itiraz.id}\nDurum: {itiraz.ITIRAZ_DURUM}\nCevap: {itiraz.ITIRAZ_CEVAP}',
-                'from@example.com',
-                [grup_yoneticisi_email],
-                fail_silently=False,
-            )
+            # grup_yoneticisi_email = 'group_manager@example.com'  # Grup yöneticisinin e-posta adresi
+            # send_mail(
+            #     'İtiraz Durumu Güncellendi',
+            #     f'İtiraz ID: {itiraz.id}\nDurum: {itiraz.ITIRAZ_DURUM}\nCevap: {itiraz.ITIRAZ_CEVAP}',
+            #     'from@example.com',
+            #     [grup_yoneticisi_email],
+            #     fail_silently=False,
+            # )
 
             response_data["error"] = False
             response_data["result"] = "İtiraz başarı ile güncellendi"
