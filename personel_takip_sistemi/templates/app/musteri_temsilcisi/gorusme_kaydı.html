@@ -22,7 +22,6 @@
         <th>Müşteri Soyadı</th>
         <th>Görüşme Konusu</th>
         <th>Görüşme Durumu</th>
-        <th>Görüşme Tarihi</th>
         <th>Görüşme Başlangıç Saati</th>
         <th>Görüşme Bitiş Saati</th>
     </tr>
@@ -34,9 +33,8 @@
             <td>{{ kayit.Musteri_soyad }}</td>
             <td>{{ kayit.GORUSME_KONU }}</td>
             <td>{{ kayit.GORUSME_DURUMU }}</td>
-            <td>{{ kayit.GORUSME_TARIHI }}</td>
-            <td>{{ kayit.GORUSME_BASLANGIC_SAATI }}</td>
-            <td>{{ kayit.GORUSME_BITIS_SAATI }}</td>
+            <td>{{ kayit.GORUSME_BASLANGIC_TARIHI }}</td>
+            <td>{{ kayit.GORUSME_BITIS_TARIHI }}</td>
         </tr>
     {% endfor %}
     </tbody>

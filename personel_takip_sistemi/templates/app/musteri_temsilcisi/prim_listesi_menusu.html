@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Müşteri Temsilcisi Prim İtirazları</title>
-    <script src="{% static 'assets/js/musteri_temsilcisi/primelere_yapilan_itirazlar.js' %}" defer></script>
+    <script src="{% static 'assets/js/musteri_temsilcisi/prim_listesi_menusu.js' %}" defer></script>
     <link rel="stylesheet" href="{% static 'assets/css/itiraz.css' %}">
 </head>
 <body>
@@ -19,6 +19,7 @@
                 <th>İtiraz Açıklama</th>
                 <th>İtiraz Durum</th>
                 <th>İtiraz Cevap</th>
+                <th>Itıraz Button</th>
             </tr>
         </thead>
         <tbody id="primler-listesi">
@@ -30,8 +31,20 @@
                     <td>{{ prim.ITIRAZ_ACIKLAMA }}</td>
                     <td>{{ prim.ITIRAZ_DURUM }}</td>
                     <td>{{ prim.ITIRAZ_CEVAP }}</td>
+                    <td><button type="button" class="itiraz-button" data-id="{{ prim.id }}">İtiraz Aç</button></td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- Pop-up Modal -->
+    <div id="itirazModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>İtiraz Açıklaması Giriniz</h2>
+            <textarea id="itirazAciklama" rows="4" cols="50"></textarea>
+            <button id="submitItiraz" type="button">Gönder</button>
+        </div>
+    </div>
 </body>
 </html>

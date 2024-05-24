@@ -1,6 +1,3 @@
-// JavaScript kodlarını buraya ekleyebilirsiniz
-// Örneğin, form gönderme işlemini AJAX ile yapmak için:
-
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('gorusmeForm').addEventListener('submit', function(event) {
         event.preventDefault();

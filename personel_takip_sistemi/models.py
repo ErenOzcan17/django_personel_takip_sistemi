@@ -30,7 +30,7 @@ class Primler(models.Model):
         ('Onaylandı', 'Onaylandı'),
         ('Reddedildi', 'Reddedildi')
     ]
-    ITIRAZ_DURUM = models.CharField(max_length=20, choices=ITIRAZ_DURUM_CHOISES)
+    ITIRAZ_DURUM = models.CharField(max_length=20, choices=ITIRAZ_DURUM_CHOISES, blank=True, null=True)
     PRIM_YIL = models.IntegerField()
     PRIM_AY_CHOISES = [
         ('Ocak', 'Ocak'),
@@ -48,5 +48,5 @@ class Primler(models.Model):
     ]
     PRIM_AY = models.CharField(max_length=20, choices=PRIM_AY_CHOISES)
     PRIM_MIKTARI = models.FloatField()
-    ITIRAZ_ACIKLAMA = models.TextField()
-    ITIRAZ_CEVAP = models.TextField()
+    ITIRAZ_ACIKLAMA = models.TextField(blank=True, null=True)
+    ITIRAZ_CEVAP = models.TextField(blank=True, null=True)
