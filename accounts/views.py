@@ -27,7 +27,7 @@ def login_view(request):
                 response_data["result"] = "User is authenticated"
             else:
                 response_data["error"] = True
-                response_data["result"] = "Email or password is wrong"
+                response_data["result"] = "Username or password is wrong"
         else:
             response_data["error"] = True
             response_data["result"] = "Form is not valid"
