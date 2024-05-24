@@ -1,32 +1,5 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
-
-
-class CustomUser(AbstractUser):
-    USER_TYPE_CHOISES = [
-        ('GrupYoneticisi', 'GrupYoneticisi'),
-        ('TakimLideri', 'TakimLideri'),
-        ('MusteriTemsilcisi', 'MusteriTemsilcisi'),
-    ]
-    USER_TYPE = models.CharField(max_length=30, choices=USER_TYPE_CHOISES)
-
-    def __str__(self):
-        return self.username
-
-
-class GrupYoneticisi(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
-
-class TakimLideri(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    GrupYoneticisi = models.ForeignKey(GrupYoneticisi, on_delete=models.CASCADE)
-
-
-class MusteriTemsilcisi(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    TakimLideri = models.ForeignKey(TakimLideri, on_delete=models.CASCADE)
-    SICIL_NO = models.CharField(max_length=11, unique=True)
+from accounts.models import MusteriTemsilcisi, TakimLideri, GrupYoneticisi
 
 
 class GorusmeKaydi(models.Model):

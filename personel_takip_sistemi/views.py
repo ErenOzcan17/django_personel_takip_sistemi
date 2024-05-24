@@ -5,7 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from personel_takip_sistemi.decorators import user_is_grup_yoneticisi, user_is_takim_lideri, user_is_musteri_temsilcisi
 from personel_takip_sistemi.forms import GorusmeKaydiFormu
-from .models import GorusmeKaydi, Primler, MusteriTemsilcisi, CustomUser
+from accounts.models import MusteriTemsilcisi, User
+from .models import GorusmeKaydi, Primler
 
 
 @login_required
@@ -40,7 +41,7 @@ def takim_lideri_itirazlar(request):
         context = []
         musteri_temsilcileri = MusteriTemsilcisi.objects.filter(TakimLideri_id=request.user.id)
         for musteri_temsilcisi in musteri_temsilcileri:
-            musteri_temsilcisi_user = CustomUser.objects.get(id=musteri_temsilcisi.user_id)
+            musteri_temsilcisi_user = User.objects.get(id=musteri_temsilcisi.user_id)
             itiraz = Primler.objects.filter(MusteriTemsilcisi_id=musteri_temsilcisi.id, ITIRAZ_DURUM='Beklemede')
             context.append({
                 'id': itiraz.id,

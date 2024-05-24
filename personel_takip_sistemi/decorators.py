@@ -32,4 +32,3 @@ def user_is_musteri_temsilcisi(function):
             raise PermissionDenied
 
     return wrap
-
