@@ -1,37 +1,24 @@
-from . import views
+"""
+URL configuration for personel_takip_sistemi project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path(
-        "grup_yoneticisi/",
-        include(
-            [
-                path("", views.grup_yoneticisi_home_view, name='grup_yoneticisi_home'),
-            ]
-        )
-    ),
-
-    path(
-        "takim_lideri/",
-        include(
-            [
-                path("itirazlar/", views.takim_lideri_itirazlar, name='takim_lideri_itirazlar'),
-            ]
-        )
-    ),
-
-    path(
-        "musteri_temsilcisi/",
-        include(
-            [
-                path("", views.musteri_temsilcisi_home_view, name='musteri_temsilcisi_home'),
-                path("cagri_listesi_menu/", views.musteri_temsilcisi_cagri_listesi_menusu, name="cagri_listesi_menu"),
-                path("aylik_prim_listesi_menu/", views.musteri_temsilcisi_aylik_prim_listesi_menusu,
-                     name="aylik_prim_listesi_menu"),
-                path("yapilan_itirazlar/", views.musteri_temsilcisi_primlere_yapilan_itirazlar_menusu,
-                     name="yapilan_itirazlar_menu"),
-                path("yeni_kayit/", views.musteri_temsilcisi_yeni_kayit, name="yeni_kayit"),
-            ]
-        )
-    ),
+    path('admin/', admin.site.urls),
+    path('', include("accounts.urls")),
+    path('personel/', include("app.urls")),
 ]

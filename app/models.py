@@ -25,6 +25,7 @@ class GorusmeKaydi(models.Model):
 class Primler(models.Model):
     MusteriTemsilcisi = models.ForeignKey(MusteriTemsilcisi, on_delete=models.CASCADE)
     ITIRAZ_EDILDI = models.BooleanField()
+    ITIRAZ_CEVAPLANDI = models.BooleanField()
     ITIRAZ_DURUM_CHOISES = [
         ('Beklemede', 'Beklemede'),
         ('Onaylandı', 'Onaylandı'),

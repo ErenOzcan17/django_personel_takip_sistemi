@@ -1,5 +1,5 @@
 """
-ASGI config for VTYS_proje project.
+ASGI config for personel_takip_sistemi project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'VTYS_proje.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'personel_takip_sistemi.settings')
 
 application = get_asgi_application()

@@ -16,10 +16,11 @@
         <th>Sicil No</th>
         <th>İsim</th>
         <th>Soyisim</th>
-        <th>İtiraz Açıklama</th>
         <th>Prim Yılı</th>
         <th>Prim Ayı</th>
+        <th>İtiraz Açıklama</th>
         <th>İtiraz Durum</th>
+        <th>İtiraz Cevapla</th>
     </tr>
     </thead>
     <tbody id="itirazlar-listesi">
@@ -28,11 +29,14 @@
             <td>{{ itiraz.sicil_no }}</td>
             <td>{{ itiraz.isim }}</td>
             <td>{{ itiraz.soyisim }}</td>
-            <td>{{ itiraz.itiraz_aciklama }}</td>
             <td>{{ itiraz.prim_yil }}</td>
             <td>{{ itiraz.prim_ay }}</td>
+            <td>{{ itiraz.itiraz_aciklama }}</td>
+            <td>{{ itiraz.itiraz_durum }}</td>
             <td>
-                <button type="button" class="itiraz-button" data-id="{{ itiraz.id }}">İtiraz Cevapla</button>
+                {% if not itiraz.itiraz_cevaplandı %}
+                    <button type="button" class="itiraz-button" data-id="{{ itiraz.id }}">İtiraz Cevapla</button>
+                {% endif %}
             </td>
         </tr>
     {% endfor %}

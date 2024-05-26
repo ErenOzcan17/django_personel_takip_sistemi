@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import render
-from personel_takip_sistemi.decorators import user_is_grup_yoneticisi, user_is_takim_lideri, user_is_musteri_temsilcisi
-from personel_takip_sistemi.forms import GorusmeKaydiFormu
+from app.decorators import user_is_grup_yoneticisi, user_is_takim_lideri, user_is_musteri_temsilcisi
+from app.forms import GorusmeKaydiFormu
 from accounts.models import MusteriTemsilcisi, User, TakimLideri
 from .models import GorusmeKaydi, Primler
 
@@ -51,7 +51,7 @@ def takim_lideri_itirazlar(request):
         musteri_temsilcileri = MusteriTemsilcisi.objects.filter(takim_lideri_id=takim_lideri.id)
         for musteri_temsilcisi in musteri_temsilcileri:
             musteri_temsilcisi_user = User.objects.get(id=musteri_temsilcisi.user_id)
-            itirazlar = Primler.objects.filter(MusteriTemsilcisi_id=musteri_temsilcisi.id)
+            itirazlar = Primler.objects.filter(MusteriTemsilcisi_id=musteri_temsilcisi.id, ITIRAZ_EDILDI=True)
             for itiraz in itirazlar:
                 context.append({
                     'id': itiraz.id,
@@ -61,6 +61,8 @@ def takim_lideri_itirazlar(request):
                     'itiraz_aciklama': itiraz.ITIRAZ_ACIKLAMA,
                     'prim_yil': itiraz.PRIM_YIL,
                     'prim_ay': itiraz.PRIM_AY,
+                    'itiraz_durum': itiraz.ITIRAZ_DURUM,
+                    'itiraz_cevaplandı': itiraz.ITIRAZ_CEVAPLANDI,
                 })
 
         return render(request, "app/takim_lideri/itirazlar.html", {"context": context})
