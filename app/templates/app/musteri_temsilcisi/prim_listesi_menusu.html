@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="layer"></div>
-    <h1>Müşteri Temsilcisi Prim İtirazları</h1>
+    <h1>Müşteri Temsilcisi Prim Listesi</h1>
     <table>
         <thead>
             <tr>
@@ -19,7 +19,9 @@
                 <th>İtiraz Açıklama</th>
                 <th>İtiraz Durum</th>
                 <th>İtiraz Cevap</th>
-                <th>Itıraz Button</th>
+                <th>İtiraz Edildi</th>
+                <th>İtiraz Cevaplandı</th>
+                <th>İtiraz Button</th>
             </tr>
         </thead>
         <tbody id="primler-listesi">
@@ -31,7 +33,13 @@
                     <td>{{ prim.ITIRAZ_ACIKLAMA }}</td>
                     <td>{{ prim.ITIRAZ_DURUM }}</td>
                     <td>{{ prim.ITIRAZ_CEVAP }}</td>
-                    <td><button type="button" class="itiraz-button" data-id="{{ prim.id }}">İtiraz Aç</button></td>
+                    <td>{{ prim.ITIRAZ_EDILDI }}</td>
+                    <td>{{ prim.ITIRAZ_CEVAPLANDI }}</td>
+                    <td>
+                        {% if not prim.ITIRAZ_EDILDI %}
+                            <button type="button" class="itiraz-button" data-id="{{ prim.id }}">İtiraz Et</button>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

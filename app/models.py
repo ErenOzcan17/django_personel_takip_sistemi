@@ -3,6 +3,7 @@ from accounts.models import MusteriTemsilcisi, TakimLideri, GrupYoneticisi
 
 
 class GorusmeKaydi(models.Model):
+    id = models.AutoField(primary_key=True)
     Musteri_ad = models.CharField(max_length=100)
     Musteri_soyad = models.CharField(max_length=100)
     MusteriTemsilcisi = models.ForeignKey(MusteriTemsilcisi, on_delete=models.CASCADE)

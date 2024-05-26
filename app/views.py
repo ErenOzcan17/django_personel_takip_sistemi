@@ -47,17 +47,16 @@ def takim_lideri_itirazlar(request):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         context = []
-        takim_lideri = TakimLideri.objects.get(user_id=request.user.id)
-        musteri_temsilcileri = MusteriTemsilcisi.objects.filter(takim_lideri_id=takim_lideri.id)
+        musteri_temsilcileri = MusteriTemsilcisi.objects.filter(takim_lideri_id=request.user.id)
         for musteri_temsilcisi in musteri_temsilcileri:
-            musteri_temsilcisi_user = User.objects.get(id=musteri_temsilcisi.user_id)
-            itirazlar = Primler.objects.filter(MusteriTemsilcisi_id=musteri_temsilcisi.id, ITIRAZ_EDILDI=True)
+            user = User.objects.get(id=musteri_temsilcisi.user_id)
+            itirazlar = Primler.objects.filter(MusteriTemsilcisi_id=user.id, ITIRAZ_EDILDI=True)
             for itiraz in itirazlar:
                 context.append({
                     'id': itiraz.id,
                     'sicil_no': musteri_temsilcisi.SICIL_NO,
-                    'isim': musteri_temsilcisi_user.first_name,
-                    'soyisim': musteri_temsilcisi_user.last_name,
+                    'isim': user.first_name,
+                    'soyisim': user.last_name,
                     'itiraz_aciklama': itiraz.ITIRAZ_ACIKLAMA,
                     'prim_yil': itiraz.PRIM_YIL,
                     'prim_ay': itiraz.PRIM_AY,
@@ -97,10 +96,11 @@ def musteri_temsilcisi_aylik_prim_listesi_menusu(request):
     if request.method == 'POST':
         response_data = {}
         try:
-            prim = Primler.objects.get(id=request.POST.get('id'))
+            json_data = json.loads(request.body)
+            prim = Primler.objects.get(id=json_data['id'])
             prim.ITIRAZ_EDILDI = True
             prim.ITIRAZ_DURUM = 'Beklemede'
-            prim.ITIRAZ_ACIKLAMA = request.POST.get('itiraz_aciklama')
+            prim.ITIRAZ_ACIKLAMA = json_data['itiraz_aciklama']
             prim.save()
             # Todo: Mail gönderme işlemi yapılacak
             response_data["error"] = False
@@ -110,8 +110,7 @@ def musteri_temsilcisi_aylik_prim_listesi_menusu(request):
             response_data["result"] = str(e)
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
-        musteri_temsilcisi = MusteriTemsilcisi.objects.get(user_id=request.user.id)
-        primler = Primler.objects.filter(MusteriTemsilcisi_id=musteri_temsilcisi.id)
+        primler = Primler.objects.filter(MusteriTemsilcisi_id=request.user.id)
         context = []
         for prim in primler:
             context.append({
@@ -122,6 +121,8 @@ def musteri_temsilcisi_aylik_prim_listesi_menusu(request):
                 'ITIRAZ_ACIKLAMA': prim.ITIRAZ_ACIKLAMA,
                 'ITIRAZ_DURUM': prim.ITIRAZ_DURUM,
                 'ITIRAZ_CEVAP': prim.ITIRAZ_CEVAP,
+                'ITIRAZ_EDILDI': prim.ITIRAZ_EDILDI,
+                'ITIRAZ_CEVAPLANDI': prim.ITIRAZ_CEVAPLANDI,
             })
 
         return render(request, "app/musteri_temsilcisi/prim_listesi_menusu.html", {"context": context})
@@ -131,8 +132,7 @@ def musteri_temsilcisi_aylik_prim_listesi_menusu(request):
 @user_is_musteri_temsilcisi
 def musteri_temsilcisi_primlere_yapilan_itirazlar_menusu(request):
     context = []
-    musteri_temsilcisi = MusteriTemsilcisi.objects.get(user_id=request.user.id)
-    primler = Primler.objects.filter(MusteriTemsilcisi_id=musteri_temsilcisi.id, ITIRAZ_EDILDI=True)
+    primler = Primler.objects.filter(MusteriTemsilcisi_id=request.user.id, ITIRAZ_EDILDI=True)
     for prim in primler:
         context.append({
             'PRIM_MIKTARI': prim.PRIM_MIKTARI,
@@ -153,7 +153,15 @@ def musteri_temsilcisi_yeni_kayit(request):
         form = GorusmeKaydiFormu(request.POST)
         try:
             if form.is_valid():
-                form.save()
+                GorusmeKaydi.objects.create(
+                    Musteri_ad=form.cleaned_data['Musteri_ad'],
+                    Musteri_soyad=form.cleaned_data['Musteri_soyad'],
+                    GORUSME_KONU=form.cleaned_data['GORUSME_KONU'],
+                    GORUSME_DURUMU=form.cleaned_data['GORUSME_DURUMU'],
+                    GORUSME_BASLANGIC_TARIHI=form.cleaned_data['GORUSME_BASLANGIC_TARIHI'],
+                    GORUSME_BITIS_TARIHI=form.cleaned_data['GORUSME_BITIS_TARIHI'],
+                    MusteriTemsilcisi_id=MusteriTemsilcisi.objects.get(user_id=request.user.id)
+                )
                 response_data["error"] = False
                 response_data["result"] = "Kayıt başarı ile oluşturuldu"
             else:
@@ -165,3 +173,5 @@ def musteri_temsilcisi_yeni_kayit(request):
     else:
         form = GorusmeKaydiFormu()
     return render(request, "app/musteri_temsilcisi/yeni_kayit.html", {"form": form})
+
+
