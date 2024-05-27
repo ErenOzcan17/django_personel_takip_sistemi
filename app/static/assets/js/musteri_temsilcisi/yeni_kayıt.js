@@ -19,9 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error(data.result);
             } else {
                 // Başarılı durumda kullanıcıya bildirim gösterilebilir
-                console.log(data.result);
-                // Örneğin, başarılı kayıt sonrası formu temizlemek için:
-                form.reset();
+                alert(data.result)
             }
         })
         .catch(error => {

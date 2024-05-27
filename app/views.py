@@ -160,7 +160,7 @@ def musteri_temsilcisi_yeni_kayit(request):
                     GORUSME_DURUMU=form.cleaned_data['GORUSME_DURUMU'],
                     GORUSME_BASLANGIC_TARIHI=form.cleaned_data['GORUSME_BASLANGIC_TARIHI'],
                     GORUSME_BITIS_TARIHI=form.cleaned_data['GORUSME_BITIS_TARIHI'],
-                    MusteriTemsilcisi_id=MusteriTemsilcisi.objects.get(user_id=request.user.id)
+                    MusteriTemsilcisi_id=request.user.id
                 )
                 response_data["error"] = False
                 response_data["result"] = "Kayıt başarı ile oluşturuldu"
@@ -173,5 +173,6 @@ def musteri_temsilcisi_yeni_kayit(request):
     else:
         form = GorusmeKaydiFormu()
     return render(request, "app/musteri_temsilcisi/yeni_kayit.html", {"form": form})
+
 
 
