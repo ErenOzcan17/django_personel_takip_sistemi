@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 import calendar
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -18,7 +18,7 @@ class Command(BaseCommand):
         month_end = timezone.make_aware(datetime(year, month, last_day, 23, 59, 59))
 
         tum_gorusme_kayitlari = GorusmeKaydi.objects.filter(GORUSME_BASLANGIC_TARIHI__gte=month_start,
-                                                             GORUSME_BITIS_TARIHI__lte=month_end)
+                                                            GORUSME_BITIS_TARIHI__lte=month_end)
 
         musteri_temsilcisileri = MusteriTemsilcisi.objects.all()
         musteri_temsilcisi_primleri = []

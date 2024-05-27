@@ -27,7 +27,7 @@
     </tr>
     </thead>
     <tbody id="kayıtlar">
-    {% for kayit in context %}
+    {% for kayit in context|slice:":20" %}
         <tr>
             <td>{{ kayit.Musteri_ad }}</td>
             <td>{{ kayit.Musteri_soyad }}</td>
